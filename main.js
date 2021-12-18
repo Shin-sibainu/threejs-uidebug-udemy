@@ -7,6 +7,15 @@ import GUI from "https://cdn.jsdelivr.net/npm/lil-gui@0.15/+esm";
  */
 const gui = new GUI();
 
+const parameters = {
+  color: 0xfff000,
+};
+
+gui.addColor(parameters, "color").onChange(() => {
+  // console.log(parameters.color);
+  material.color.set(parameters.color);
+});
+
 //シーン
 const scene = new THREE.Scene();
 
@@ -30,7 +39,7 @@ const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 //マテリアル
 const material = new THREE.MeshBasicMaterial({
-  color: "red",
+  color: parameters.color,
 });
 
 //メッシュ化
@@ -38,12 +47,22 @@ const box = new THREE.Mesh(boxGeometry, material);
 scene.add(box);
 
 //デバッグ
+//folders
+const positionFolder = gui.addFolder("Position");
+const visibleFolder = gui.addFolder("Visible");
+
 // gui.add(box.position, "x");
 // gui.add(box.position, "x", -3, 3, 0.01);
-gui.add(box.position, "x").min(-3).max(3).step(0.01).name("transformX");
+// gui.add(box.position, "x").min(-3).max(3).step(0.01).name("transformX");
+positionFolder
+  .add(box.position, "x")
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name("transformX");
 
-gui.add(box, "visible");
-gui.add(material, "wireframe");
+visibleFolder.add(box, "visible");
+visibleFolder.add(material, "wireframe");
 
 //ライト
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
